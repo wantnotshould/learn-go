@@ -7,3 +7,9 @@
 ## 版权声明
 
 除特别声明外，本项目中的内容使用 [CC BY-SA 3.0 License](https://creativecommons.org/licenses/by-sa/3.0/)（创作共用 署名-相同方式共享 3.0 许可协议）授权，代码遵循 [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)（3 项条款的 BSD 许可协议）。
+
+## 参考资料
+
+[The Go Programming Language Specification](https://go.dev/ref/spec) [国内访问](https://golang.google.cn/ref/spec)
+
+[Effective Go](https://go.dev/doc/effective_go) [国内访问](https://golang.google.cn/doc/effective_go)
