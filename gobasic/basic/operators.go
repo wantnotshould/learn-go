@@ -3,7 +3,7 @@ package basic
 
 import "fmt"
 
-func arithmetic() {
+func arithmeticOperator() {
 	fmt.Println("算术运算符：")
 	a := 10
 	b := 3
@@ -14,7 +14,7 @@ func arithmetic() {
 	fmt.Println(a % b) // 取余
 }
 
-func comparison() {
+func comparisonOperator() {
 	fmt.Println("\n关系运算符：")
 	a := 10
 	b := 5
@@ -26,7 +26,7 @@ func comparison() {
 	fmt.Println(a <= b) // 小于或等于
 }
 
-func logical() {
+func logicalOperator() {
 	fmt.Println("\n逻辑运算符：")
 	a := true
 	b := false
@@ -35,7 +35,7 @@ func logical() {
 	fmt.Println(!a)     // 非（NOT）
 }
 
-func bitwise() {
+func bitwiseOperator() {
 	fmt.Println("\n位运算符：")
 	a := 5              // 二进制：0101
 	b := 3              // 二进制：0011
@@ -48,7 +48,7 @@ func bitwise() {
 	fmt.Println(a >> 1) // 输出 2   (右移一位，0101 >> 1 = 0010)
 }
 
-func assignment() {
+func assignmentOperator() {
 	fmt.Println("\n赋值运算符：")
 	a := 5
 	a += 3         // a = a + 3
@@ -61,7 +61,7 @@ func assignment() {
 	fmt.Println(a) // 输出 4
 }
 
-func other() {
+func otherOperator() {
 	fmt.Println("\n其他运算符：")
 	a := 5
 	a++ // 自增
@@ -73,7 +73,7 @@ func other() {
 	fmt.Println(b, c)
 }
 
-func conditional() {
+func conditionalOperator() {
 	fmt.Println("\n条件运算符：")
 	a := 10
 	result := 0
@@ -85,7 +85,7 @@ func conditional() {
 	fmt.Println(result)
 }
 
-func pointer() {
+func pointerOperator() {
 	fmt.Println("\n指针运算符：")
 	a := 10
 	p := &a         // p 是指向 a 的指针
@@ -96,12 +96,12 @@ func pointer() {
 }
 
 func operators() {
-	arithmetic()
-	comparison()
-	logical()
-	bitwise()
-	assignment()
-	other()
-	conditional()
-	pointer()
+	arithmeticOperator()
+	comparisonOperator()
+	logicalOperator()
+	bitwiseOperator()
+	assignmentOperator()
+	otherOperator()
+	conditionalOperator()
+	pointerOperator()
 }
