@@ -45,12 +45,17 @@ func randDo() {
 	}
 }
 
-func Concurrency() {
-	unbuffered()
-	randDo()
+func someSync() {
 	syncMutex()
 	syncRWMutex()
 	syncWaitGroup()
 	syncOnce()
 	syncCondWithQuit()
+}
+
+func Concurrency() {
+	unbuffered()
+	randDo()
+	// sync.Mutex sync.RWMutex sync.WaitGroup sync.Once sync.NewCond
+	someSync()
 }

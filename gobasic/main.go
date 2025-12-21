@@ -13,4 +13,6 @@ func main() {
 	control.Control()
 	// 03_并发编程
 	concurrency.Concurrency()
+	// 03_并发编程练习题
+	// exercises.Exercises()
 }
