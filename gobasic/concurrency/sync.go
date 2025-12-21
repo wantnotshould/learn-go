@@ -4,6 +4,7 @@ package concurrency
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 // sync.Mutex 互斥锁
@@ -126,6 +127,7 @@ var (
 	m        = sync.Mutex{}
 	cond     = sync.NewCond(&m)
 	counter3 = 0
+	stopCh   chan struct{}
 )
 
 func producer() {
@@ -134,6 +136,9 @@ func producer() {
 		if counter3 >= 10 {
 			cond.Wait() // 等待条件满足
 		}
+
+		// 模拟生产延迟
+		time.Sleep(500 * time.Millisecond) // 延迟模拟
 
 		counter3++
 		fmt.Println("produced:", counter3)
@@ -148,6 +153,10 @@ func consumer() {
 		if counter3 == 0 {
 			cond.Wait() // 等待条件满足
 		}
+
+		// 模拟消费延迟
+		time.Sleep(500 * time.Millisecond) // 延迟模拟
+
 		fmt.Println("consumed:", counter3)
 		counter3--
 		cond.Signal()   // 通知生产者
@@ -155,7 +164,6 @@ func consumer() {
 	}
 }
 
-// TODO:10秒后停止下
 func syncCond() {
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -171,4 +179,81 @@ func syncCond() {
 	}()
 
 	wg.Wait()
+}
+
+func producerWithQuit(wg *sync.WaitGroup, stopCh chan struct{}) {
+	defer wg.Done() // 在 goroutine 完成时通知 WaitGroup
+
+	for {
+		select {
+		case <-stopCh: // 监听退出信号
+			fmt.Println("Producer exiting")
+			return
+		default:
+			cond.L.Lock()
+			if counter3 >= 10 {
+				cond.Wait() // 等待条件满足
+			}
+
+			// 模拟生产延迟
+			time.Sleep(100 * time.Millisecond) // 延迟模拟
+
+			// 生产操作
+			counter3++
+			fmt.Println("produced:", counter3)
+
+			cond.Signal() // 通知消费者
+			cond.L.Unlock()
+			// ！不要放在这里
+			// time.Sleep(500 * time.Millisecond)
+		}
+	}
+}
+
+func consumerWithQuit(wg *sync.WaitGroup, stopCh chan struct{}) {
+	defer wg.Done() // 在 goroutine 完成时通知 WaitGroup
+
+	for {
+		select {
+		case <-stopCh: // 监听退出信号
+			fmt.Println("Consumer exiting")
+			return
+		default:
+			cond.L.Lock()
+			if counter3 == 0 {
+				cond.Wait() // 等待条件满足
+			}
+
+			// 模拟消费延迟
+			time.Sleep(200 * time.Millisecond) // 延迟模拟
+
+			// 消费操作
+			fmt.Println("consumed:", counter3)
+			counter3--
+
+			cond.Signal() // 通知生产者
+			cond.L.Unlock()
+		}
+	}
+}
+
+func syncCondWithQuit() {
+	var wg sync.WaitGroup
+	stopCh = make(chan struct{})
+	timer := time.NewTimer(5 * time.Second)
+
+	wg.Add(2)
+	// 启动生产者和消费者
+	go producerWithQuit(&wg, stopCh)
+	go consumerWithQuit(&wg, stopCh)
+
+	// 等待 timer.C 中的值
+	<-timer.C
+	fmt.Println("stop syncCondWithQuit")
+
+	// 发送停止信号，通知所有 goroutine 停止
+	close(stopCh)
+
+	wg.Wait()
+	fmt.Println("all goroutines finished")
 }

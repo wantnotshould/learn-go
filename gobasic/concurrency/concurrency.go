@@ -52,5 +52,5 @@ func Concurrency() {
 	syncRWMutex()
 	syncWaitGroup()
 	syncOnce()
-	syncCond()
+	syncCondWithQuit()
 }
